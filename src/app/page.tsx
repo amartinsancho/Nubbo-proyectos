@@ -1,27 +1,29 @@
 import type { Metadata } from 'next';
 import type { ReactNode } from 'react';
 
+import { siteUrl } from '@/lib/seo';
 import { cafe, cardPhoto, menu, photos, testimonials } from '@/lib/cafe';
 
 export const metadata: Metadata = {
-  title: { absolute: 'La Esquina de Tortoli · Cafetería de barrio con café, desayunos y dulces' },
+  title: { absolute: 'La cafetería de Tortoli · Café italiano y croissants artesanos en Tortoli' },
   description:
-    'La Esquina de Tortoli: tu cafetería de barrio para empezar el día, hacer una pausa y disfrutar sin prisas. Café, desayunos, bollería y tartas caseras. Mira la carta y ven a visitarnos.',
+    'Cafetería artesanal en Via Piamonte 5, Tortoli: café italiano, croissants de pistacho, mermelada y crema, tostadas y desayunos. Abierto de martes a domingo, de 7:00 a 18:00.',
+  keywords: ['cafetería Tortoli', 'café italiano Tortoli', 'croissant de pistacho', 'desayunos Tortoli', 'cafetería artesanal'],
   alternates: { canonical: '/' },
   openGraph: {
-    title: 'La Esquina de Tortoli · Cafetería de barrio',
-    description: 'Los pequeños momentos saben mejor con café. Carta, espacio e información para visitarnos.',
+    title: 'La cafetería de Tortoli · Café italiano y croissants',
+    description: 'Café italiano, croissants artesanos y desayunos en Via Piamonte 5, Tortoli. Martes a domingo, 7:00 a 18:00.',
     locale: 'es_ES',
     type: 'website',
-    images: [{ url: photos.hero, alt: 'Cappuccino y croissants sobre una mesa de terraza' }],
+    images: [{ url: photos.hero, alt: 'Café con latte art y croissant sobre una mesa de madera' }],
   },
 };
 
 /* ---------- piezas pequeñas ---------- */
 
 const focus = 'focus-visible:ring-2 focus-visible:ring-brand/40 focus-visible:ring-offset-2 focus-visible:outline-none';
-const btnPrimary = `inline-flex items-center justify-center gap-2 rounded-full bg-brand px-7 py-4 font-semibold text-cream transition-colors hover:bg-clay ${focus}`;
-const btnSecondary = `inline-flex items-center justify-center gap-2 rounded-full border-2 border-brand px-7 py-3.5 font-semibold text-brand transition-colors hover:bg-brand hover:text-cream ${focus}`;
+const btnPrimary = `inline-flex items-center justify-center gap-2 min-h-12 w-full rounded-full bg-brand px-7 py-4 font-semibold sm:w-auto text-cream transition-colors hover:bg-clay ${focus}`;
+const btnSecondary = `inline-flex items-center justify-center gap-2 min-h-12 w-full rounded-full border-2 border-brand px-7 py-3.5 font-semibold sm:w-auto text-brand transition-colors hover:bg-brand hover:text-cream ${focus}`;
 const label = 'text-xs font-semibold tracking-[0.28em] uppercase';
 
 /** Cartel de calle esmaltado: el motivo de la "esquina". */
@@ -83,29 +85,62 @@ const values = [
 
 /* ---------- página ---------- */
 
-export default function Home() {
+const dayMap = ['Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+
+const buildJsonLd = (url: string) => ({
+  url,
+  '@context': 'https://schema.org',
+  '@type': 'CafeOrCoffeeShop',
+  name: cafe.name,
+  alternateName: cafe.brand,
+  description:
+    'Cafetería artesanal en Tortoli con café italiano, croissants de pistacho, mermelada y crema, tostadas y desayunos.',
+  image: `${url}${photos.hero}`,
+  telephone: cafe.phoneHref,
+  email: cafe.email,
+  servesCuisine: ['Café', 'Desayunos', 'Bollería'],
+  hasMenu: `${url}/#carta`,
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: cafe.address.street,
+    addressLocality: cafe.address.locality,
+    addressCountry: cafe.address.country,
+  },
+  openingHoursSpecification: [
+    { '@type': 'OpeningHoursSpecification', dayOfWeek: dayMap, opens: '07:00', closes: '18:00' },
+  ],
+  sameAs: [cafe.instagramUrl],
+  hasMap: cafe.mapsUrl,
+});
+
+export default async function Home() {
+  const jsonLd = buildJsonLd(await siteUrl());
   return (
     <main>
+      <script
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, '\\u003c') }}
+        type="application/ld+json"
+      />
       {/* HERO */}
       <section aria-labelledby="titulo-inicio" className="relative overflow-hidden" id="inicio">
-        <div className="mx-auto grid max-w-6xl items-center gap-12 px-4 pt-10 pb-16 sm:px-6 sm:pt-14 lg:grid-cols-12 lg:gap-10 lg:pt-16 lg:pb-24">
+        <div className="mx-auto grid max-w-6xl items-center gap-10 px-4 pt-8 pb-14 sm:px-6 sm:pt-14 lg:grid-cols-12 lg:gap-10 lg:pt-16 lg:pb-24">
           <div className="lg:col-span-6">
-            <p className={`${label} text-clay motion-safe:animate-rise`}>Cafetería de barrio</p>
+            <p className={`${label} text-clay motion-safe:animate-rise`}>Cafetería artesanal en Tortoli</p>
             <h1
-              className="mt-5 font-display text-[2.8rem] leading-[1.04] tracking-tight text-balance motion-safe:animate-rise sm:text-6xl lg:text-[4.4rem]"
+              className="mt-5 font-display text-[2.4rem] leading-[1.06] tracking-tight text-balance motion-safe:animate-rise sm:text-6xl lg:text-[4.4rem]"
               id="titulo-inicio"
               style={{ animationDelay: '80ms' }}
             >
               Los pequeños momentos saben mejor <span className="text-clay">con café</span>
             </h1>
             <p
-              className="mt-6 max-w-md text-lg leading-8 text-brand/85 motion-safe:animate-rise"
+              className="mt-5 max-w-md text-lg leading-7 text-brand/85 motion-safe:animate-rise"
               style={{ animationDelay: '180ms' }}
             >
               Tu rincón favorito del barrio para empezar el día, hacer una pausa y disfrutar sin prisas.
             </p>
             <div
-              className="mt-9 flex flex-col gap-3 motion-safe:animate-rise sm:flex-row"
+              className="mt-7 flex flex-col gap-3 motion-safe:animate-rise sm:flex-row"
               style={{ animationDelay: '280ms' }}
             >
               <a className={btnPrimary} href="#carta">
@@ -116,7 +151,7 @@ export default function Home() {
               </a>
             </div>
             <ul
-              className="mt-10 flex flex-wrap gap-x-6 gap-y-2 text-sm font-medium text-brand/80 motion-safe:animate-rise"
+              className="mt-8 flex flex-wrap gap-x-5 gap-y-2 text-sm font-medium text-brand/80 motion-safe:animate-rise"
               style={{ animationDelay: '380ms' }}
             >
               {['Buen café', 'Producto fresco', 'Trato cercano'].map((t) => (
@@ -133,13 +168,15 @@ export default function Home() {
               aria-hidden
               className="absolute inset-0 translate-x-3 translate-y-3 rounded-tl-[5rem] rounded-br-[2rem] bg-accent/35 sm:translate-x-5 sm:translate-y-5 lg:rounded-tl-[8rem]"
             />
-            <div className="relative aspect-[4/5] overflow-hidden rounded-tl-[5rem] rounded-br-[2rem] bg-brand/10 motion-safe:animate-fade sm:aspect-[5/4] lg:aspect-[4/5] lg:rounded-tl-[8rem]">
+            <div className="relative aspect-[4/5] overflow-hidden rounded-tl-[4rem] rounded-br-[2rem] bg-brand/10 motion-safe:animate-fade sm:aspect-[5/4] lg:aspect-[4/5] lg:rounded-tl-[8rem]">
               <img
-                alt="Un cappuccino y dos croissants rellenos sobre una mesa de terraza"
+                alt="Café con latte art en forma de corazón y un croissant dorado sobre una mesa de madera"
                 className="size-full object-cover"
                 decoding="async"
                 fetchPriority="high"
+                sizes="(min-width: 1024px) 560px, 100vw"
                 src={photos.hero}
+                srcSet={`${photos.heroSmall} 640w, ${photos.hero} 1200w`}
               />
             </div>
             <Plate className="absolute -bottom-6 left-3 -rotate-2 sm:-left-4">
@@ -151,16 +188,18 @@ export default function Home() {
       </section>
 
       {/* NUESTRA HISTORIA */}
-      <section aria-labelledby="titulo-historia" className="bg-paper py-20 sm:py-28" id="historia">
+      <section aria-labelledby="titulo-historia" className="bg-paper py-14 sm:py-24" id="historia">
         <div className="mx-auto grid max-w-6xl items-center gap-14 px-4 sm:px-6 lg:grid-cols-12 lg:gap-20">
           <div className="relative lg:col-span-5">
-            <div className="aspect-[4/5] overflow-hidden rounded-tr-[5rem] rounded-bl-[2rem] bg-brand/10 lg:rounded-tr-[7rem]">
+            <div className="aspect-[5/4] overflow-hidden rounded-tr-[4rem] sm:aspect-[4/5] rounded-bl-[2rem] bg-brand/10 lg:rounded-tr-[7rem]">
               <img
-                alt="Rincón de la cafetería junto a un gran ventanal, con taburetes de madera y plantas"
+                alt="Mesa de madera junto a la ventana con un café, un libro y flores secas"
                 className="size-full object-cover"
                 decoding="async"
                 loading="lazy"
                 src={photos.about}
+                srcSet={`${photos.about.replace('.webp', '-s.webp')} 640w, ${photos.about} 1200w`}
+                sizes="(min-width: 1024px) 440px, 100vw"
               />
             </div>
             <div className="absolute -right-2 -bottom-8 grid size-32 -rotate-6 place-items-center rounded-full bg-olive-deep p-1.5 text-cream shadow-lg shadow-brand/20 sm:-right-6 sm:size-36">
@@ -178,12 +217,12 @@ export default function Home() {
 
           <div className="lg:col-span-7">
             <p className={`${label} text-clay`}>Nuestra historia</p>
-            <h2 className="mt-4 font-display text-4xl leading-[1.08] tracking-tight text-balance sm:text-5xl" id="titulo-historia">
+            <h2 className="mt-4 font-display text-[2rem] leading-[1.1] tracking-tight text-balance sm:text-5xl" id="titulo-historia">
               Más que una cafetería, somos parte del barrio
             </h2>
             <div className="mt-6 grid max-w-prose gap-4 text-lg leading-8 text-brand/85">
               <p>
-                La Esquina de Tortoli es una cafetería familiar con una idea muy sencilla: que el barrio tenga un sitio
+                La cafetería de Tortoli es un sitio familiar con una idea muy sencilla: que el barrio tenga un sitio
                 donde tomarse un buen café sin mirar el reloj.
               </p>
               <p>
@@ -207,12 +246,12 @@ export default function Home() {
       </section>
 
       {/* NUESTRA CARTA */}
-      <section aria-labelledby="titulo-carta" className="py-20 sm:py-28" id="carta">
+      <section aria-labelledby="titulo-carta" className="py-14 sm:py-24" id="carta">
         <div className="mx-auto max-w-6xl px-4 sm:px-6">
           <div className="grid items-end gap-6 lg:grid-cols-12">
             <div className="lg:col-span-7">
               <p className={`${label} text-clay`}>La carta</p>
-              <h2 className="mt-4 font-display text-4xl leading-[1.08] tracking-tight sm:text-5xl" id="titulo-carta">
+              <h2 className="mt-4 font-display text-[2rem] leading-[1.1] tracking-tight sm:text-5xl" id="titulo-carta">
                 Nuestra carta
               </h2>
               <p className="mt-5 max-w-lg text-lg leading-8 text-brand/85">
@@ -222,12 +261,12 @@ export default function Home() {
             <p className="lg:col-span-5 lg:justify-self-end">
               <span className="inline-flex items-center gap-2 rounded-full border border-clay/40 bg-paper px-4 py-2 text-sm font-medium text-clay">
                 <span aria-hidden className="size-2 rounded-full bg-accent" />
-                Precios de ejemplo, a modo de muestra
+                Precios orientativos, pueden cambiar
               </span>
             </p>
           </div>
 
-          <div className="mt-12 grid gap-6 md:grid-cols-2 md:items-start lg:gap-8">
+          <div className="mt-10 grid gap-6 md:grid-cols-2 md:items-start lg:gap-8">
             {menu.map((c, i) => (
               <article
                 className={`group overflow-hidden rounded-[2rem] border border-brand/10 bg-paper transition-shadow hover:shadow-xl hover:shadow-brand/10 ${i % 2 ? 'md:mt-14' : ''}`}
@@ -271,7 +310,7 @@ export default function Home() {
           <div className="grid gap-6 lg:grid-cols-12 lg:items-end">
             <div className="lg:col-span-8">
               <p className={`${label} text-accent`}>Nuestro espacio</p>
-              <h2 className="mt-4 font-display text-4xl leading-[1.08] tracking-tight text-balance sm:text-5xl" id="titulo-espacio">
+              <h2 className="mt-4 font-display text-[2rem] leading-[1.1] tracking-tight text-balance sm:text-5xl" id="titulo-espacio">
                 Un espacio para desconectar y sentirte como en casa
               </h2>
             </div>
@@ -280,7 +319,7 @@ export default function Home() {
             </p>
           </div>
 
-          <div className="mt-14 grid gap-10 md:grid-cols-3 md:items-start md:gap-6">
+          <div className="mt-10 grid gap-8 md:grid-cols-3 md:items-start md:gap-6">
             {photos.gallery.map((p, i) => (
               <figure className={i === 1 ? 'md:mt-16' : ''} key={p.src}>
                 <div
@@ -297,38 +336,34 @@ export default function Home() {
                     className="size-full object-cover"
                     decoding="async"
                     loading="lazy"
+                    sizes="(min-width: 768px) 360px, 100vw"
                     src={p.src}
+                    srcSet={`${p.src.replace('.webp', '-s.webp')} 640w, ${p.src} 1200w`}
                   />
                 </div>
                 <figcaption className="mt-4 font-display text-xl">{p.caption}</figcaption>
               </figure>
             ))}
           </div>
-          <p className="mt-12 text-sm text-cream/65">
-            Fotografías de archivo a modo de ejemplo: sustitúyelas por imágenes de nuestro local.
-          </p>
         </div>
       </section>
 
       {/* OPINIONES */}
-      <section aria-labelledby="titulo-opiniones" className="bg-accent/15 py-20 sm:py-28" id="opiniones">
+      <section aria-labelledby="titulo-opiniones" className="bg-accent/15 py-14 sm:py-24" id="opiniones">
         <div className="mx-auto max-w-6xl px-4 sm:px-6">
           <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
             <div>
               <p className={`${label} text-clay`}>Opiniones</p>
-              <h2 className="mt-4 font-display text-4xl leading-[1.08] tracking-tight sm:text-5xl" id="titulo-opiniones">
+              <h2 className="mt-4 font-display text-[2rem] leading-[1.1] tracking-tight sm:text-5xl" id="titulo-opiniones">
                 Lo que se dice en la esquina
               </h2>
             </div>
-            <p className="inline-flex w-fit items-center rounded-full bg-olive-deep px-4 py-2 text-sm font-medium text-cream">
-              Opiniones de demostración
-            </p>
           </div>
 
-          <div className="mt-12 grid gap-6 lg:grid-cols-12">
+          <div className="mt-10 grid gap-5 lg:grid-cols-12">
             {testimonials.map((t, i) => (
               <figure
-                className={`flex flex-col justify-between rounded-[2rem] bg-paper p-7 shadow-sm shadow-brand/5 sm:p-9 ${
+                className={`flex flex-col justify-between rounded-[2rem] bg-paper p-6 shadow-sm shadow-brand/5 sm:p-9 ${
                   i === 0 ? 'lg:col-span-7 lg:row-span-2 lg:p-12' : 'lg:col-span-5'
                 }`}
                 key={t.name}
@@ -353,9 +388,6 @@ export default function Home() {
                   <span className="min-w-0">
                     <span className="block font-semibold">{t.name}</span>
                     <span className="block text-sm text-brand/75">{t.role}</span>
-                    <span className="mt-0.5 block text-xs font-semibold tracking-wide text-clay uppercase">
-                      Opinión de ejemplo
-                    </span>
                   </span>
                 </figcaption>
               </figure>
@@ -365,17 +397,17 @@ export default function Home() {
       </section>
 
       {/* INFORMACIÓN PRÁCTICA */}
-      <section aria-labelledby="titulo-contacto" className="bg-paper py-20 sm:py-28" id="contacto">
+      <section aria-labelledby="titulo-contacto" className="bg-paper py-14 sm:py-24" id="contacto">
         <div className="mx-auto grid max-w-6xl gap-14 px-4 sm:px-6 lg:grid-cols-12 lg:gap-16">
           <div className="lg:col-span-7">
             <p className={`${label} text-clay`}>Información práctica</p>
-            <h2 className="mt-4 font-display text-4xl leading-[1.08] tracking-tight sm:text-5xl" id="titulo-contacto">
+            <h2 className="mt-4 font-display text-[2rem] leading-[1.1] tracking-tight sm:text-5xl" id="titulo-contacto">
               Ven a vernos a la esquina
             </h2>
 
             <Plate className="mt-8 -rotate-1">
               <p className="text-[0.65rem] font-semibold tracking-[0.3em] text-cream/75 uppercase">
-                Dirección de ejemplo
+                Dirección
               </p>
               <p className="mt-1 font-display text-2xl sm:text-3xl">{cafe.address.street}</p>
               <p className="text-cream/85">{cafe.address.city}</p>
@@ -397,7 +429,6 @@ export default function Home() {
                     </div>
                   ))}
                 </dl>
-                <p className="mt-3 text-sm text-clay">Horario de ejemplo, editable.</p>
               </div>
 
               <div className="grid content-start gap-6">
@@ -406,15 +437,14 @@ export default function Home() {
                     <span className="text-clay">
                       <Phone />
                     </span>
-                    Teléfono
+                    Teléfono y WhatsApp
                   </h3>
                   <a
-                    className={`mt-3 inline-block rounded text-xl font-semibold tabular-nums underline decoration-accent decoration-2 underline-offset-4 transition-colors hover:text-clay ${focus}`}
+                    className={`mt-3 inline-block py-1 rounded text-xl font-semibold tabular-nums underline decoration-accent decoration-2 underline-offset-4 transition-colors hover:text-clay ${focus}`}
                     href={`tel:${cafe.phoneHref}`}
                   >
                     {cafe.phone}
                   </a>
-                  <p className="mt-1 text-sm text-clay">Teléfono de ejemplo, editable.</p>
                 </div>
                 <div>
                   <h3 className="flex items-center gap-2 font-display text-2xl">
@@ -424,15 +454,25 @@ export default function Home() {
                     Instagram
                   </h3>
                   <a
-                    className={`mt-3 inline-block rounded text-lg font-semibold underline decoration-accent decoration-2 underline-offset-4 transition-colors hover:text-clay ${focus}`}
+                    className={`mt-3 inline-block py-1 rounded text-lg font-semibold underline decoration-accent decoration-2 underline-offset-4 transition-colors hover:text-clay ${focus}`}
                     href={cafe.instagramUrl}
                     rel="noopener noreferrer"
                     target="_blank"
                   >
                     @{cafe.instagram}
                   </a>
-                  <p className="mt-1 text-sm text-clay">Usuario de ejemplo, editable.</p>
                 </div>
+                {cafe.email ? (
+                  <div>
+                    <h3 className="flex items-center gap-2 font-display text-2xl">Correo</h3>
+                    <a
+                      className={`mt-3 inline-block rounded py-1 text-lg font-semibold break-all underline decoration-accent decoration-2 underline-offset-4 transition-colors hover:text-clay ${focus}`}
+                      href={`mailto:${cafe.email}`}
+                    >
+                      {cafe.email}
+                    </a>
+                  </div>
+                ) : null}
               </div>
             </div>
 
@@ -448,13 +488,15 @@ export default function Home() {
 
           <div className="lg:col-span-5">
             <div className="relative">
-              <div className="aspect-[4/5] overflow-hidden rounded-tl-[5rem] rounded-br-[2rem] bg-brand/10 lg:sticky lg:top-28">
+              <div className="aspect-[4/3] overflow-hidden rounded-tl-[4rem] rounded-br-[2rem] bg-brand/10 sm:aspect-[4/5] lg:sticky lg:top-28">
                 <img
-                  alt="Café con leche en taza azul junto a un croissant, frente a una ventana"
+                  alt="Bandeja de croissants recién horneados, con y sin crema de pistacho"
                   className="size-full object-cover"
                   decoding="async"
                   loading="lazy"
                   src={photos.visit}
+                  srcSet={`${photos.visit.replace('.webp', '-s.webp')} 640w, ${photos.visit} 1200w`}
+                  sizes="(min-width: 1024px) 480px, 100vw"
                 />
               </div>
               <a
@@ -477,10 +519,10 @@ export default function Home() {
       </section>
 
       {/* LLAMADA FINAL */}
-      <section aria-labelledby="titulo-final" className="bg-accent py-16 text-brand sm:py-20">
+      <section aria-labelledby="titulo-final" className="bg-accent py-14 text-brand sm:py-20">
         <div className="mx-auto flex max-w-6xl flex-col gap-8 px-4 sm:px-6 md:flex-row md:items-center md:justify-between">
           <div className="max-w-xl">
-            <h2 className="font-display text-4xl leading-[1.08] tracking-tight sm:text-5xl" id="titulo-final">
+            <h2 className="font-display text-[2rem] leading-[1.1] tracking-tight sm:text-5xl" id="titulo-final">
               Tu café te espera en la esquina
             </h2>
             <p className="mt-3 text-xl font-semibold">Pasa a saludar: siempre hay una mesa y un buen café esperándote.</p>

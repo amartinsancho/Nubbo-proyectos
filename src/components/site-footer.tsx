@@ -39,7 +39,6 @@ export function SiteFooter() {
               <br />
               {cafe.address.city}
             </address>
-            <p className="mt-1 text-sm text-cream/60">Dirección de ejemplo</p>
             <a className={`mt-4 inline-block font-medium underline underline-offset-4 ${link}`} href={cafe.mapsUrl} rel="noopener noreferrer" target="_blank">
               Cómo llegar
             </a>
@@ -55,21 +54,19 @@ export function SiteFooter() {
                 </div>
               ))}
             </dl>
-            <p className="mt-3 text-sm text-cream/60">Horario de ejemplo</p>
           </div>
 
           <div className="md:col-span-2">
             <h2 className={heading}>Contacto</h2>
             <ul className="mt-4 grid gap-2 text-cream/90">
               <li>
-                <a className={`tabular-nums ${link}`} href={`tel:${cafe.phoneHref}`}>
+                <a className={`inline-block py-1 tabular-nums ${link}`} href={`tel:${cafe.phoneHref}`}>
                   {cafe.phone}
                 </a>
-                <p className="text-sm text-cream/60">Teléfono de ejemplo</p>
               </li>
               {cafe.email ? (
                 <li>
-                  <a className={`break-all ${link}`} href={`mailto:${cafe.email}`}>
+                  <a className={`inline-block py-1 break-all ${link}`} href={`mailto:${cafe.email}`}>
                     {cafe.email}
                   </a>
                 </li>

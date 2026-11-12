@@ -1,8 +1,8 @@
 // The app's name and header links, in one place: the header, the footer and every page title read them.
 export const site = {
-  name: 'La Esquina de Tortoli',
+  name: 'La cafetería de Tortoli',
   description:
-    'La Esquina de Tortoli es la cafetería del barrio: café de especialidad, desayunos caseros, bollería y tartas hechas en casa. Consulta la carta y ven a visitarnos.',
+    'Cafetería artesanal en Tortoli: café italiano, croissants de pistacho, mermelada y crema, tostadas y desayunos. Martes a domingo, de 7:00 a 18:00.',
   /** The logo image's URL (the user's file): the header, the footer and the browser icon show it. Empty: the name alone. */
   logo: '',
   /**

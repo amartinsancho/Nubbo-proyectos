@@ -1,37 +1,49 @@
 /**
  * =====================================================================================================
- *  DATOS DE EJEMPLO · EDITA ESTE ARCHIVO
- *  Todo lo que aparece aquí (dirección, horarios, teléfono, Instagram, precios y opiniones) es un
- *  EJEMPLO, no un dato real de La Esquina de Tortoli. Cámbialo por los datos verdaderos del local:
- *  la web (cabecera, carta, contacto y pie de página) se actualiza sola.
+ *  DATOS DEL LOCAL · EDITA ESTE ARCHIVO
+ *  Dirección, horarios, teléfono, WhatsApp, correo e Instagram son los datos reales del local.
+ *  Los PRECIOS de la carta y los nombres de las opiniones son de ejemplo: cámbialos cuando quieras.
  * =====================================================================================================
  */
 
 export const cafe = {
-  name: 'La Esquina de Tortoli',
+  name: 'La cafetería de Tortoli',
+  /** Nombre corto de la marca (logo). */
+  brand: 'La Esquina Café',
 
-  /** DIRECCIÓN DE EJEMPLO: sustitúyela por la real. */
   address: {
-    street: 'Calle de Ejemplo, 12',
-    city: '00000 Localidad de ejemplo',
+    street: 'Via Piamonte, 5',
+    city: 'Tortoli, Italia',
+    locality: 'Tortoli',
+    country: 'IT',
   },
 
-  /** TELÉFONO DE EJEMPLO. `phoneHref` es el mismo número sin espacios, para el enlace de llamada. */
-  phone: '+34 000 000 000',
-  phoneHref: '+34000000000',
+  /** Teléfono y WhatsApp. `phoneHref` es el mismo número sin espacios, para el enlace de llamada. */
+  phone: '+34 645 371 038',
+  phoneHref: '+34645371038',
 
-  /** HORARIO DE EJEMPLO: cambia días y horas a tu gusto (puedes añadir o quitar filas). */
+  /**
+   * WHATSAPP: número en formato internacional, solo cifras y sin el "+" (así lo pide WhatsApp).
+   * Cámbialo aquí cuando quieras usar otro número: el botón flotante se actualiza solo.
+   */
+  whatsapp: '34645371038',
+  whatsappMessage: 'Hola, me gustaría hacer una consulta.',
+
+  /** Horario: martes a domingo de 7:00 a 18:00; lunes cerrado. */
   hours: [
-    { days: 'Lunes a viernes', time: '08:00 – 20:00' },
-    { days: 'Sábados', time: '09:00 – 21:00' },
-    { days: 'Domingos y festivos', time: '09:00 – 15:00' },
+    { days: 'Martes a domingo', time: '07:00 – 18:00' },
+    { days: 'Lunes', time: 'Cerrado' },
   ],
 
-  /** INSTAGRAM DE EJEMPLO: pon aquí el usuario real, sin la arroba. */
-  instagram: 'tu_instagram_ejemplo',
+  /** Instagram: usuario sin la arroba. */
+  instagram: 'tu_esquinatortoli',
 
   /** Correo de contacto: déjalo vacío ('') para ocultarlo. */
-  email: '',
+  email: 'hola@laesquinadetortoli.es',
+
+  get whatsappUrl() {
+    return `https://wa.me/${this.whatsapp}?text=${encodeURIComponent(this.whatsappMessage)}`;
+  },
 
   /**
    * ENLACE A GOOGLE MAPS: se genera con la dirección de arriba. Cuando tengas la dirección real, las
@@ -40,7 +52,7 @@ export const cafe = {
    */
   get mapsUrl() {
     return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
-      `${this.name}, ${this.address.street}, ${this.address.city}`,
+      `${this.address.street}, ${this.address.city}`,
     )}`;
   },
   get instagramUrl() {
@@ -54,10 +66,10 @@ export const menu = [
     id: 'cafe',
     title: 'Café',
     blurb: 'Grano de tueste artesanal, molido al momento.',
-    photo: 'https://images.unsplash.com/photo-1660401413411-0d145e57b149',
-    alt: 'Café con leche con dibujo de corazón en taza blanca, junto a un jarrón con flores secas',
+    photo: '/fotos/cafe',
+    alt: 'Cappuccino con latte art en una taza de cerámica, con granos de café sobre la mesa de madera',
     items: [
-      { name: 'Espresso', price: '1,30 €' },
+      { name: 'Espresso italiano', price: '1,30 €' },
       { name: 'Cappuccino', price: '2,20 €' },
       { name: 'Flat white', price: '2,60 €' },
       { name: 'Latte', price: '2,50 €' },
@@ -67,8 +79,8 @@ export const menu = [
     id: 'desayunos',
     title: 'Desayunos',
     blurb: 'Para empezar el día con calma y con hambre.',
-    photo: 'https://images.unsplash.com/photo-1543393786-6b9844cc148d',
-    alt: 'Dos platos de desayuno servidos en una mesa de madera junto a tazas de café',
+    photo: '/fotos/tostadas',
+    alt: 'Tostadas de masa madre con aguacate y huevo, y con tomate y aceite, junto a un café',
     items: [
       { name: 'Tostada con tomate y aceite de oliva', price: '2,90 €' },
       { name: 'Tostada de aguacate y huevo', price: '5,50 €' },
@@ -80,20 +92,22 @@ export const menu = [
     id: 'dulces',
     title: 'Dulces',
     blurb: 'Bollería del día y tartas hechas en casa.',
-    photo: 'https://images.unsplash.com/photo-1612366747681-e4ca6992b1e9',
-    alt: 'Dos croissants dorados sobre un plato oscuro con un vaso de leche',
+    photo: '/fotos/croissants',
+    alt: 'Croissants de pistacho, de mermelada, de crema y de mantequilla sobre una tabla de madera',
     items: [
       { name: 'Croissant de mantequilla', price: '1,90 €' },
-      { name: 'Cookie de chocolate', price: '2,20 €' },
-      { name: 'Tarta casera del día (porción)', price: '3,80 €' },
+      { name: 'Croissant de pistacho', price: '2,90 €' },
+      { name: 'Croissant de mermelada', price: '2,30 €' },
+      { name: 'Croissant de crema', price: '2,50 €' },
+            { name: 'Tarta casera del día (porción)', price: '3,80 €' },
     ],
   },
   {
     id: 'meriendas',
     title: 'Meriendas',
     blurb: 'Cafés especiales y bollería para la pausa de la tarde.',
-    photo: 'https://images.unsplash.com/photo-1767065584563-c95f726ce857',
-    alt: 'Café con espuma decorada junto a una tartaleta de fruta sobre una mesa de madera',
+    photo: '/fotos/bandeja',
+    alt: 'Bandeja de croissants recién horneados, con y sin crema de pistacho',
     items: [
       { name: 'Café especial del mes', price: '3,20 €' },
       { name: 'Café especial + croissant', price: '4,50 €' },
@@ -102,50 +116,50 @@ export const menu = [
   },
 ];
 
-/** OPINIONES DE DEMOSTRACIÓN: no son clientes reales. Sustitúyelas por reseñas verdaderas (con permiso). */
+/** OPINIONES: textos de muestra. Sustitúyelos por reseñas verdaderas (con permiso) cuando las tengas. */
 export const testimonials = [
   {
     quote:
-      'Entro a por un café "rápido" y acabo quedándome una hora. Aquí nadie te mete prisa y el croissant está siempre recién hecho.',
-    name: 'María',
-    role: 'Vecina de la calle de al lado',
+      'Por fin un café italiano de verdad: intenso, cremoso y bien hecho. Entro a por uno "rápido" y acabo quedándome un buen rato.',
+    name: 'Marco',
+    role: 'Cliente de todas las mañanas',
   },
   {
-    quote: 'El flat white es de los mejores que he probado, y el trato es como el de casa.',
-    name: 'Javier',
-    role: 'Viene cada mañana antes de trabajar',
+    quote: 'El croissant de pistacho es el mejor que he probado por la zona. Ya sé a dónde ir cada fin de semana.',
+    name: 'Giulia',
+    role: 'Vecina de Tortoli',
   },
   {
-    quote: 'Perfecto para una merienda con amigas: tarta casera, buen café y una mesa junto a la ventana.',
+    quote: 'Perfecto para una merienda con amigas: buena bollería, buen café y una mesa junto a la ventana.',
     name: 'Lucía',
     role: 'Meriendas de los sábados',
   },
 ];
 
-/** Fotografías de archivo (Unsplash). Sustitúyelas por fotos propias del local cuando las tengas. */
-const u = (id: string, w = 1600) => `https://images.unsplash.com/photo-${id}?auto=format&fit=crop&w=${w}&q=75`;
+/** Fotografías de estilo editorial (en public/fotos): cada una tiene versión grande (.webp) y pequeña (-s.webp). */
 export const photos = {
-  hero: u('1786426119462-380a67b9d838'),
-  about: u('1780307205444-a8693eef2f4a', 1200),
-  visit: u('1769138886139-b6aa68782f53', 1200),
+  hero: '/fotos/hero.webp',
+  heroSmall: '/fotos/hero-s.webp',
+  about: '/fotos/mesa.webp',
+  visit: '/fotos/bandeja.webp',
   gallery: [
     {
-      src: u('1567880905822-56f8e06fe630', 1000),
-      alt: 'La barra de madera del café, con grandes ventanales y mucha luz natural',
+      src: '/fotos/barra.webp',
+      alt: 'La barra de madera con la máquina de espresso, tazas y bollería bajo una campana de cristal',
       caption: 'La barra',
     },
     {
-      src: u('1511081692775-05d0f180a065', 1000),
-      alt: 'Mesa de madera y lámparas colgantes en el interior de una cafetería',
+      src: '/fotos/interior.webp',
+      alt: 'Interior cálido de la cafetería, con mesas de madera natural, lámparas colgantes y un gran ventanal',
       caption: 'Mesas de madera y luz cálida',
     },
     {
-      src: u('1780039584176-399d8676f9c8', 1000),
-      alt: 'Rincón acogedor de la cafetería con sillas de color terracota y decoración en la pared',
+      src: '/fotos/rincon.webp',
+      alt: 'Rincón acogedor con una mesa de madera, dos sillas, plantas y luz de ventana',
       caption: 'Rincones con carácter',
     },
   ],
 };
 
-/** Optimiza una URL de la carta para tarjetas (ancho 900). */
-export const cardPhoto = (url: string) => `${url}?auto=format&fit=crop&w=900&q=75`;
+/** Foto de la carta: versión pequeña para tarjetas. */
+export const cardPhoto = (url: string) => `${url}-s.webp`;

@@ -4,6 +4,7 @@ import type { ReactNode } from 'react';
 
 import { DevBanner } from '@/components/dev-banner';
 import { SiteFooter } from '@/components/site-footer';
+import { WhatsAppButton } from '@/components/whatsapp-button';
 import { SiteHeader } from '@/components/site-header';
 import { siteUrl } from '@/lib/seo';
 import { site } from '@/lib/site';
@@ -18,6 +19,7 @@ export async function generateMetadata(): Promise<Metadata> {
     metadataBase: new URL(await siteUrl()),
     title: { default: site.name, template: `%s · ${site.name}` },
     description: site.description,
+    applicationName: site.name,
     openGraph: { locale: 'es_ES', type: 'website', siteName: site.name },
     // the logo, else the name's initials on the brand colour (src/app/site-icon.svg): every site has an icon
     icons: { icon: site.logo || '/site-icon.svg' },
@@ -38,6 +40,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         <SiteHeader />
         <div className="flex-1">{children}</div>
         <SiteFooter />
+        <WhatsAppButton />
         <DevBanner />
       </body>
     </html>
