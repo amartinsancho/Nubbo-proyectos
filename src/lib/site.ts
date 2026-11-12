@@ -1,7 +1,8 @@
 // The app's name and header links, in one place: the header, the footer and every page title read them.
 export const site = {
-  name: 'New Totalum app',
-  description: 'Built with Totalum',
+  name: 'La Esquina de Tortoli',
+  description:
+    'La Esquina de Tortoli es la cafetería del barrio: café de especialidad, desayunos caseros, bollería y tartas hechas en casa. Consulta la carta y ven a visitarnos.',
   /** The logo image's URL (the user's file): the header, the footer and the browser icon show it. Empty: the name alone. */
   logo: '',
   /**
@@ -28,7 +29,12 @@ export const site = {
   /** The owner's and staff's addresses for admin pages: one counts only once its account verified the e-mail (`isAdmin`, `@/lib/admin`). */
   admins: [] as string[],
   /** Links everyone sees (landing sections, public pages). */
-  nav: [] as { href: string; label: string }[],
+  nav: [
+    { href: '/#inicio', label: 'Inicio' },
+    { href: '/#historia', label: 'Nuestra historia' },
+    { href: '/#carta', label: 'Carta' },
+    { href: '/#contacto', label: 'Contacto' },
+  ] as { href: string; label: string }[],
   /** Links only signed-in users see (dashboard, lists, admin). */
   appNav: [{ href: '/account', label: 'Account' }] as { href: string; label: string }[],
 };

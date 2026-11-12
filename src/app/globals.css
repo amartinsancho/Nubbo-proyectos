@@ -1,9 +1,39 @@
 @import 'tailwindcss';
 
-/* The project's design tokens (colours, radius): see _system-docs/design.md. */
+/*
+ * La Esquina de Tortoli: la paleta de la propietaria.
+ *   crema #F5F0E8 · marrón café #4B3027 · terracota #B87555 · verde oliva #74785A
+ * `clay` y `olive-deep` son los mismos tonos oscurecidos para texto pequeño (contraste AA sobre crema).
+ */
 @theme {
-  --color-brand: oklch(0.55 0.2 260);
-  --color-accent: oklch(0.75 0.15 70);
+  --color-brand: #4b3027;
+  --color-accent: #b87555;
+  --color-cream: #f5f0e8;
+  --color-paper: #fbf8f3;
+  --color-olive: #74785a;
+  --color-olive-deep: #4f533a;
+  --color-clay: #8e4e31;
+
+  --animate-rise: rise 0.9s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  --animate-fade: fade 1.2s ease-out both;
+  @keyframes rise {
+    from {
+      opacity: 0;
+      transform: translateY(18px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+  @keyframes fade {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
 }
 
 /*
@@ -13,5 +43,20 @@
  */
 @theme inline {
   --font-sans: var(--font-body, ui-sans-serif), system-ui, sans-serif;
-  --font-display: var(--font-heading, var(--font-body, ui-sans-serif)), system-ui, sans-serif;
+  --font-display: var(--font-heading, var(--font-body, ui-sans-serif)), system-ui, serif;
+}
+
+/* Navegación por anclas: desplazamiento suave y espacio para la cabecera fija. */
+html {
+  scroll-padding-top: 5rem;
+}
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+::selection {
+  background: var(--color-accent);
+  color: var(--color-paper);
 }
