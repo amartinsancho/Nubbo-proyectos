@@ -27,7 +27,7 @@ const cta = { href: '/#contacto', label: 'Ven a visitarnos' };
 export function SiteHeader() {
   if (!hasShell()) return null;
   return (
-    <header className="sticky top-0 z-30 border-b border-brand/10 bg-cream/90 backdrop-blur-md">
+    <header suppressHydrationWarning className="sticky top-0 z-30 border-b border-brand/10 bg-cream/90 backdrop-blur-md">
       <div className="relative mx-auto flex h-[4.5rem] max-w-6xl items-center justify-between gap-4 px-4 sm:px-6">
         <Link
           aria-label={`${site.name}: inicio`}
@@ -36,9 +36,10 @@ export function SiteHeader() {
         >
           <Wordmark />
         </Link>
-        <nav aria-label="Principal" className="hidden items-center gap-1 md:flex">
+        <nav aria-label="Principal" suppressHydrationWarning className="hidden items-center gap-1 md:flex">
           {site.nav.map((l) => (
             <a
+              suppressHydrationWarning
               className="rounded-full px-3.5 py-2 text-sm font-medium transition-colors hover:bg-brand/5 hover:text-clay focus-visible:ring-2 focus-visible:ring-brand/40 focus-visible:outline-none"
               href={l.href}
               key={l.href}
@@ -47,6 +48,7 @@ export function SiteHeader() {
             </a>
           ))}
           <a
+            suppressHydrationWarning
             className="ml-3 rounded-full bg-brand px-5 py-2.5 text-sm font-semibold text-cream transition-colors hover:bg-clay focus-visible:ring-2 focus-visible:ring-brand/40 focus-visible:ring-offset-2 focus-visible:outline-none"
             href={cta.href}
           >
